@@ -6,7 +6,6 @@ if (!isset($_SESSION['admin_id'])) {
 }
 include '../includes/db.php';
 
-// Tangani form saat disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama     = $_POST['nama'];
     $jenis    = $_POST['jenis'];
@@ -17,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal  = $_POST['tanggal_instalasi'];
     $catatan  = $_POST['catatan'];
 
-    // Cek apakah IP yang dipilih masih tersedia
     $cek = $conn->prepare("SELECT COUNT(*) FROM ip_address WHERE ip = ? AND status = 'Tersedia'");
     $cek->bind_param("s", $ip);
     $cek->execute();
@@ -30,17 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Simpan ke tabel perangkat
-    $stmt = $conn->prepare("INSERT INTO perangkat (nama, jenis_perangkat, lokasi, ip_address, mac_address, status, tanggal_instalasi, catatan) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-
+    $stmt = $conn->prepare("INSERT INTO perangkat (nama, jenis_perangkat, lokasi, ip_address, mac_address, status, tanggal_instalasi, catatan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssss", $nama, $jenis, $lokasi, $ip, $mac, $status, $tanggal, $catatan);
+
     $admin_id = $_SESSION['admin_id'];
     $conn->query("INSERT INTO log_aktivitas (admin_id, aksi) VALUES ($admin_id, 'Menambah perangkat: $nama (Catatan: $catatan)')");
 
-
     if ($stmt->execute()) {
-        // Update status IP
         $update_ip = $conn->prepare("UPDATE ip_address SET status = 'Digunakan' WHERE ip = ?");
         $update_ip->bind_param("s", $ip);
         $update_ip->execute();
@@ -57,87 +51,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Tambah Perangkat</title>
-    <style>
-        form {
-            max-width: 500px;
-            margin: 30px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-        }
-        button {
-            background: green;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        a.back {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            text-decoration: none;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 
 <?php include '../includes/sidebar.php'; ?>
 
-<div class="content">
-    <h2 style="text-align: center;">Tambah Perangkat</h2>
+<div class="ml-64 p-8">
+    <h1 class="text-2xl font-semibold mb-6">Tambah Perangkat</h1>
 
-    <form method="POST">
-        <label>Nama Perangkat</label>
-        <input type="text" name="nama" required>
+    <form method="POST" class="bg-white p-6 rounded-lg shadow-lg max-w-xl mx-auto space-y-4">
+        <div>
+            <label class="block text-sm font-medium mb-1">Nama Perangkat</label>
+            <input type="text" name="nama" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
 
-        <label>Jenis Perangkat</label>
-        <input type="text" name="jenis" required>
+        <div>
+            <label class="block text-sm font-medium mb-1">Jenis Perangkat</label>
+            <input type="text" name="jenis" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
 
-        <label>Lokasi</label>
-        <input type="text" name="lokasi" required>
+        <div>
+            <label class="block text-sm font-medium mb-1">Lokasi</label>
+            <input type="text" name="lokasi" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
 
-        <label>IP Address</label>
-        <select name="ip_address" required>
-            <option value="">-- Pilih IP Tersedia --</option>
-            <?php
-            $result = $conn->query("SELECT ip FROM ip_address WHERE status = 'Tersedia'");
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value='{$row['ip']}'>{$row['ip']}</option>";
-            }
-            ?>
-        </select>
+        <div>
+            <label class="block text-sm font-medium mb-1">IP Address</label>
+            <select name="ip_address" required class="w-full border border-gray-300 rounded px-3 py-2">
+                <option value="">-- Pilih IP Tersedia --</option>
+                <?php
+                $result = $conn->query("SELECT ip FROM ip_address WHERE status = 'Tersedia'");
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value='{$row['ip']}'>{$row['ip']}</option>";
+                }
+                ?>
+            </select>
+        </div>
 
-        <label>MAC Address</label>
-        <input type="text" name="mac_address" required>
+        <div>
+            <label class="block text-sm font-medium mb-1">MAC Address</label>
+            <input type="text" name="mac_address" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
 
-        <label>Status Perangkat</label>
-        <select name="status" required>
-            <option value="Aktif">Aktif</option>
-            <option value="Tidak Aktif">Tidak Aktif</option>
-        </select>
+        <div>
+            <label class="block text-sm font-medium mb-1">Status Perangkat</label>
+            <select name="status" required class="w-full border border-gray-300 rounded px-3 py-2">
+                <option value="Aktif">Aktif</option>
+                <option value="Tidak Aktif">Tidak Aktif</option>
+            </select>
+        </div>
 
-        <label>Tanggal Instalasi</label>
-        <input type="date" name="tanggal_instalasi" required>
+        <div>
+            <label class="block text-sm font-medium mb-1">Tanggal Instalasi</label>
+            <input type="date" name="tanggal_instalasi" required class="w-full border border-gray-300 rounded px-3 py-2">
+        </div>
 
-        <label>Catatan Tambahan</label>
-        <textarea name="catatan"></textarea>
+        <div>
+            <label class="block text-sm font-medium mb-1">Catatan Tambahan</label>
+            <textarea name="catatan" rows="3" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+        </div>
 
-        <button type="submit">Simpan</button>
+        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition">
+            Simpan Perangkat
+        </button>
+
+        <div class="text-center mt-4">
+            <a href="perangkat.php" class="text-blue-600 hover:underline text-sm">← Kembali ke daftar perangkat</a>
+        </div>
     </form>
-
-    <a class="back" href="perangkat.php">← Kembali ke daftar perangkat</a>
 </div>
 
 </body>

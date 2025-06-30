@@ -25,42 +25,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Tambah IP Address</title>
-    <style>
-        form {
-            max-width: 400px;
-            margin: 30px auto;
-            background: #fff; padding: 20px;
-            box-shadow: 0 0 10px #ccc; border-radius: 10px;
-        }
-        input {
-            width: 100%; padding: 10px; margin: 10px 0;
-        }
-        button {
-            background: green; color: white;
-            border: none; padding: 10px; width: 100%;
-        }
-        .error { color: red; text-align: center; }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 
 <?php include '../includes/sidebar.php'; ?>
 
-<div class="content">
-    <h2 style="text-align:center;">Tambah IP Address</h2>
+<div class="ml-64 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h2 class="text-2xl font-semibold text-center mb-6">Tambah IP Address</h2>
 
-    <?php if ($error): ?>
-        <p class="error"><?= $error ?></p>
-    <?php endif; ?>
+        <?php if ($error): ?>
+            <div class="mb-4 text-red-600 text-center font-medium">
+                <?= htmlspecialchars($error) ?>
+            </div>
+        <?php endif; ?>
 
-    <form method="POST">
-        <label>IP Address</label>
-        <input type="text" name="ip" required placeholder="contoh: 192.168.1.100">
-        <button type="submit">Simpan</button>
-    </form>
+        <form method="POST" class="space-y-4">
+            <div>
+                <label class="block mb-1 font-medium">IP Address</label>
+                <input type="text" name="ip" required placeholder="contoh: 192.168.1.100"
+                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition">
+                Simpan
+            </button>
+        </form>
+    </div>
 </div>
 
 </body>

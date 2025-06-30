@@ -6,15 +6,11 @@ if (!isset($_SESSION['admin_id'])) {
 }
 include '../includes/db.php';
 
-// Ambil filter dari form
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$filter_jenis = isset($_GET['jenis']) ? $_GET['jenis'] : '';
-$filter_status = isset($_GET['status']) ? $_GET['status'] : '';
+$search = $_GET['search'] ?? '';
+$filter_jenis = $_GET['jenis'] ?? '';
+$filter_status = $_GET['status'] ?? '';
 
-// Query dasar
 $sql = "SELECT * FROM perangkat WHERE 1";
-
-// Tambah filter
 if ($search !== '') {
     $sql .= " AND (nama LIKE '%$search%' OR ip_address LIKE '%$search%' OR lokasi LIKE '%$search%')";
 }
@@ -26,104 +22,94 @@ if ($filter_status !== '') {
 }
 
 $result = $conn->query($sql);
-
-// Ambil semua jenis unik untuk dropdown
 $jenisList = $conn->query("SELECT DISTINCT jenis_perangkat FROM perangkat");
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Data Perangkat</title>
-    <style>
-        table {
-            width: 95%; margin: 20px auto; border-collapse: collapse;
-            background: white;
-        }
-        th, td {
-            border: 1px solid #ccc; padding: 8px; text-align: center;
-        }
-        th {
-            background: #007bff; color: white;
-        }
-        form.filter {
-            width: 95%; margin: 20px auto;
-            display: flex; gap: 10px; align-items: center;
-            flex-wrap: wrap;
-        }
-        input, select, button {
-            padding: 8px;
-        }
-        .aksi a {
-            margin: 0 5px;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 
 <?php include '../includes/sidebar.php'; ?>
 
-<div class="content">
-    <h2 style="text-align: center;">Data Perangkat</h2>
-    <div style="text-align:left; margin-bottom: 10px;">
-    <a href="tambah_perangkat.php" style="padding: 8px 15px; background: green; color: white; text-decoration: none; border-radius: 5px;">+ Tambah Perangkat</a>
-</div>
+<div class="ml-64 p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-semibold">Data Perangkat</h1>
+        <a href="tambah_perangkat.php" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+            + Tambah Perangkat
+        </a>
+    </div>
 
-
-    <form class="filter" method="GET">
-        <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="Cari nama/IP/lokasi">
+    <!-- Filter -->
+    <form method="GET" class="bg-white p-4 rounded-lg shadow mb-6 flex flex-wrap gap-4 items-center">
+        <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="Cari nama / IP / lokasi"
+               class="border border-gray-300 px-3 py-2 rounded w-full sm:w-1/4">
         
-        <select name="jenis">
+        <select name="jenis" class="border border-gray-300 px-3 py-2 rounded w-full sm:w-1/5">
             <option value="">-- Jenis Perangkat --</option>
             <?php while ($j = $jenisList->fetch_assoc()): ?>
-                <option value="<?= $j['jenis_perangkat'] ?>" <?= ($filter_jenis == $j['jenis_perangkat']) ? 'selected' : '' ?>>
+                <option value="<?= $j['jenis_perangkat'] ?>" <?= $filter_jenis == $j['jenis_perangkat'] ? 'selected' : '' ?>>
                     <?= $j['jenis_perangkat'] ?>
                 </option>
             <?php endwhile; ?>
         </select>
 
-        <select name="status">
+        <select name="status" class="border border-gray-300 px-3 py-2 rounded w-full sm:w-1/5">
             <option value="">-- Status --</option>
-            <option value="Aktif" <?= ($filter_status == 'Aktif') ? 'selected' : '' ?>>Aktif</option>
-            <option value="Tidak Aktif" <?= ($filter_status == 'Tidak Aktif') ? 'selected' : '' ?>>Tidak Aktif</option>
+            <option value="Aktif" <?= $filter_status == 'Aktif' ? 'selected' : '' ?>>Aktif</option>
+            <option value="Tidak Aktif" <?= $filter_status == 'Tidak Aktif' ? 'selected' : '' ?>>Tidak Aktif</option>
         </select>
 
-        <button type="submit">Filter</button>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            Filter
+        </button>
     </form>
-    
 
-    <table>
-        <tr>
-            <th>No</th>
-            <th>Nama</th>
-            <th>Jenis</th>
-            <th>IP</th>
-            <th>MAC</th>
-            <th>Lokasi</th>
-            <th>Status</th>
-            <th>Tanggal Instalasi</th>
-            <th>Aksi</th>
-        </tr>
-        <?php
-        $no = 1;
-        while ($row = $result->fetch_assoc()):
-        ?>
-        <tr>
-            <td><?= $no++ ?></td>
-            <td><?= $row['nama'] ?></td>
-            <td><?= $row['jenis_perangkat'] ?></td>
-            <td><?= $row['ip_address'] ?></td>
-            <td><?= $row['mac_address'] ?></td>
-            <td><?= $row['lokasi'] ?></td>
-            <td><?= $row['status'] ?></td>
-            <td><?= $row['tanggal_instalasi'] ?></td>
-            <td class="aksi">
-                <a href="edit_perangkat.php?id=<?= $row['id'] ?>">Edit</a> |
-                <a href="hapus_perangkat.php?id=<?= $row['id'] ?>" onclick="return confirm('Yakin hapus perangkat ini?')">Hapus</a>
-            </td>
-        </tr>
-        <?php endwhile; ?>
-    </table>
+    <!-- Tabel Data -->
+    <div class="overflow-x-auto bg-white shadow rounded-lg">
+        <table class="min-w-full text-sm text-center">
+            <thead class="bg-blue-600 text-white">
+                <tr>
+                    <th class="py-3 px-4">No</th>
+                    <th class="py-3 px-4">Nama</th>
+                    <th class="py-3 px-4">Jenis</th>
+                    <th class="py-3 px-4">IP</th>
+                    <th class="py-3 px-4">MAC</th>
+                    <th class="py-3 px-4">Lokasi</th>
+                    <th class="py-3 px-4">Status</th>
+                    <th class="py-3 px-4">Instalasi</th>
+                    <th class="py-3 px-4">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
+                <tr class="hover:bg-gray-50">
+                    <td class="py-2 px-4"><?= $no++ ?></td>
+                    <td class="py-2 px-4"><?= $row['nama'] ?></td>
+                    <td class="py-2 px-4"><?= $row['jenis_perangkat'] ?></td>
+                    <td class="py-2 px-4"><?= $row['ip_address'] ?></td>
+                    <td class="py-2 px-4"><?= $row['mac_address'] ?></td>
+                    <td class="py-2 px-4"><?= $row['lokasi'] ?></td>
+                    <td class="py-2 px-4">
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold
+                            <?= $row['status'] == 'Aktif' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' ?>">
+                            <?= $row['status'] ?>
+                        </span>
+                    </td>
+                    <td class="py-2 px-4"><?= $row['tanggal_instalasi'] ?></td>
+                    <td class="py-2 px-4">
+                        <a href="edit_perangkat.php?id=<?= $row['id'] ?>" class="text-blue-600 hover:underline">Edit</a> |
+                        <a href="hapus_perangkat.php?id=<?= $row['id'] ?>" class="text-red-600 hover:underline" onclick="return confirm('Yakin hapus perangkat ini?')">Hapus</a>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>

@@ -15,46 +15,41 @@ $result = $conn->query("
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Log Aktivitas</title>
-    <style>
-        table {
-            width: 90%;
-            margin: 30px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ccc; padding: 10px; text-align: left;
-        }
-        th {
-            background: #007bff; color: white;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 
 <?php include '../includes/sidebar.php'; ?>
 
-<div class="content">
-    <h2 style="text-align:center;">Log Aktivitas Admin</h2>
+<div class="ml-64 p-8">
+    <h2 class="text-2xl font-semibold mb-6 text-center">Log Aktivitas Admin</h2>
 
-    <table>
-        <tr>
-            <th>No</th>
-            <th>Admin</th>
-            <th>Aksi</th>
-            <th>Waktu</th>
-        </tr>
-        <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?= $no++ ?></td>
-            <td><?= htmlspecialchars($row['username']) ?></td>
-            <td><?= htmlspecialchars($row['aksi']) ?></td>
-            <td><?= $row['waktu'] ?></td>
-        </tr>
-        <?php endwhile; ?>
-    </table>
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-600 text-white">
+                <tr>
+                    <th class="px-4 py-3 text-left text-sm font-medium">No</th>
+                    <th class="px-4 py-3 text-left text-sm font-medium">Admin</th>
+                    <th class="px-4 py-3 text-left text-sm font-medium">Aksi</th>
+                    <th class="px-4 py-3 text-left text-sm font-medium">Waktu</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td class="px-4 py-2"><?= $no++ ?></td>
+                    <td class="px-4 py-2"><?= htmlspecialchars($row['username']) ?></td>
+                    <td class="px-4 py-2"><?= htmlspecialchars($row['aksi']) ?></td>
+                    <td class="px-4 py-2"><?= $row['waktu'] ?></td>
+                </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>

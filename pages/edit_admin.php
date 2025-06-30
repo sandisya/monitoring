@@ -7,13 +7,15 @@ if (!isset($_SESSION['admin_id'])) {
 include '../includes/db.php';
 
 if (!isset($_GET['id'])) {
-    echo "ID tidak ditemukan."; exit;
+    echo "ID tidak ditemukan.";
+    exit;
 }
-$id = $_GET['id'];
 
+$id = $_GET['id'];
 $data = $conn->query("SELECT * FROM admin WHERE id = $id")->fetch_assoc();
 if (!$data) {
-    echo "Admin tidak ditemukan."; exit;
+    echo "Admin tidak ditemukan.";
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -35,13 +37,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<form method="POST" style="max-width:400px;margin:30px auto;">
-    <h3>Edit Admin</h3>
-    <label>Username</label>
-    <input type="text" name="username" value="<?= $data['username'] ?>" required><br><br>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
 
-    <label>Password Baru (kosongkan jika tidak diubah)</label>
-    <input type="password" name="password"><br><br>
+<?php include '../includes/sidebar.php'; ?>
 
-    <button type="submit">Simpan Perubahan</button>
-</form>
+<div class="ml-64 p-8">
+    <div class="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-semibold mb-4 text-center">Edit Admin</h2>
+
+        <form method="POST" class="space-y-4">
+            <div>
+                <label class="block font-medium mb-1">Username</label>
+                <input type="text" name="username" value="<?= htmlspecialchars($data['username']) ?>" required
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div>
+                <label class="block font-medium mb-1">Password Baru (biarkan kosong jika tidak ingin diubah)</label>
+                <input type="password" name="password"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition duration-200">
+                Simpan Perubahan
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -10,58 +10,57 @@ $result = $conn->query("SELECT * FROM ip_address ORDER BY ip ASC");
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Daftar IP Address</title>
-    <style>
-        table {
-            width: 90%; margin: 20px auto; border-collapse: collapse; background: white;
-        }
-        th, td {
-            border: 1px solid #ccc; padding: 10px; text-align: center;
-        }
-        th {
-            background: #007bff; color: white;
-        }
-        a.btn {
-            display: inline-block;
-            margin: 20px; padding: 10px 15px;
-            background: green; color: white; text-decoration: none; border-radius: 5px;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 
 <?php include '../includes/sidebar.php'; ?>
 
-<div class="content">
-    <h2 style="text-align:center;">Daftar IP Address</h2>
+<div class="ml-64 p-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-semibold">Daftar IP Address</h1>
+        <a href="tambah_ip.php" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+            + Tambah IP
+        </a>
+    </div>
 
-    <a class="btn" href="tambah_ip.php">+ Tambah IP</a>
-
-    <table>
-        <tr>
-            <th>No</th>
-            <th>IP Address</th>
-            <th>Status</th>
-            <th>Aksi</th>
-        </tr>
-        <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?= $no++ ?></td>
-            <td><?= $row['ip'] ?></td>
-            <td><?= $row['status'] ?></td>
-            <td>
-                <?php if ($row['status'] === 'Tersedia'): ?>
-                    <a href="edit_ip.php?id=<?= $row['id'] ?>">Edit</a>
-                    <a href="hapus_ip.php?ip=<?= urlencode($row['ip']) ?>" onclick="return confirm('Hapus IP ini?')">Hapus</a>
-                <?php else: ?>
-                    -
-                <?php endif; ?>
-            </td>
-        </tr>
-        <?php endwhile; ?>
-    </table>
+    <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-600 text-white">
+                <tr>
+                    <th class="px-6 py-3 text-sm font-medium text-left">No</th>
+                    <th class="px-6 py-3 text-sm font-medium text-left">IP Address</th>
+                    <th class="px-6 py-3 text-sm font-medium text-left">Status</th>
+                    <th class="px-6 py-3 text-sm font-medium text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 text-sm">
+                <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4"><?= $no++ ?></td>
+                    <td class="px-6 py-4"><?= htmlspecialchars($row['ip']) ?></td>
+                    <td class="px-6 py-4">
+                        <span class="<?= $row['status'] === 'Tersedia' ? 'text-green-600' : 'text-red-600' ?>">
+                            <?= $row['status'] ?>
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-center space-x-2">
+                        <?php if ($row['status'] === 'Tersedia'): ?>
+                            <a href="edit_ip.php?id=<?= $row['id'] ?>" class="text-blue-600 hover:underline">Edit</a>
+                            <a href="hapus_ip.php?ip=<?= urlencode($row['ip']) ?>" onclick="return confirm('Hapus IP ini?')" class="text-red-600 hover:underline">Hapus</a>
+                        <?php else: ?>
+                            <span class="text-gray-400 italic">-</span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>
