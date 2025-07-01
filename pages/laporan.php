@@ -13,6 +13,7 @@ include '../includes/sidebar.php';
   <meta charset="UTF-8">
   <title>Export Laporan</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="../logo.png" type="image/png">
 </head>
 <body class="bg-gray-100 text-gray-800">
 

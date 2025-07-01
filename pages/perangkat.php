@@ -30,6 +30,7 @@ $jenisList = $conn->query("SELECT DISTINCT jenis_perangkat FROM perangkat");
 <head>
     <meta charset="UTF-8">
     <title>Data Perangkat</title>
+    <link rel="icon" href="../logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -88,20 +89,20 @@ $jenisList = $conn->query("SELECT DISTINCT jenis_perangkat FROM perangkat");
             <tbody class="divide-y divide-gray-200">
                 <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
                 <tr class="hover:bg-gray-50">
-                    <td class="py-2 px-4"><?= $no++ ?></td>
-                    <td class="py-2 px-4"><?= $row['nama'] ?></td>
-                    <td class="py-2 px-4"><?= $row['jenis_perangkat'] ?></td>
-                    <td class="py-2 px-4"><?= $row['ip_address'] ?></td>
-                    <td class="py-2 px-4"><?= $row['mac_address'] ?></td>
-                    <td class="py-2 px-4"><?= $row['lokasi'] ?></td>
-                    <td class="py-2 px-4">
+                    <td style="font-size: 15px;" class="py-2 px-4"><?= $no++ ?></td>
+                    <td style="font-size: 15px;" class="py-2 px-4"><?= $row['nama'] ?></td>
+                    <td style="font-size: 15px;" class="py-2 px-4"><?= $row['jenis_perangkat'] ?></td>
+                    <td style="font-size: 15px;" class="py-2 px-4"><?= $row['ip_address'] ?></td>
+                    <td style="font-size: 15px;" class="py-2 px-4"><?= $row['mac_address'] ?></td>
+                    <td style="font-size: 15px;" class="py-2 px-4"><?= $row['lokasi'] ?></td>
+                    <td style="font-size: 15px;" class="py-2 px-4">
                         <span class="px-2 py-1 rounded-full text-xs font-semibold
                             <?= $row['status'] == 'Aktif' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' ?>">
                             <?= $row['status'] ?>
                         </span>
                     </td>
-                    <td class="py-2 px-4"><?= $row['tanggal_instalasi'] ?></td>
-                    <td class="py-2 px-4">
+                    <td style="font-size: 15px;" class="py-2 px-4"><?= $row['tanggal_instalasi'] ?></td>
+                    <td style="font-size: 15px;" class="py-2 px-4">
                         <a href="edit_perangkat.php?id=<?= $row['id'] ?>" class="text-blue-600 hover:underline">Edit</a> |
                         <a href="hapus_perangkat.php?id=<?= $row['id'] ?>" class="text-red-600 hover:underline" onclick="return confirm('Yakin hapus perangkat ini?')">Hapus</a>
                     </td>

@@ -14,6 +14,7 @@ $result = $conn->query("SELECT * FROM admin ORDER BY id ASC");
 <head>
     <meta charset="UTF-8">
     <title>Manajemen Admin</title>
+    <link rel="icon" href="../logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -34,19 +35,19 @@ $result = $conn->query("SELECT * FROM admin ORDER BY id ASC");
             <table class="min-w-full border border-gray-200 text-sm">
                 <thead class="bg-blue-600 text-white">
                     <tr>
-                        <th class="px-4 py-2 border">No</th>
-                        <th class="px-4 py-2 border">Username</th>
-                        <th class="px-4 py-2 border">Aksi</th>
+                        <th style="font-size: 15px;" class="px-4 py-2 border">No</th>
+                        <th style="font-size: 15px;" class="px-4 py-2 border">Username</th>
+                        <th style="font-size: 15px;" class="px-4 py-2 border">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
                     <tr class="hover:bg-gray-100">
-                        <td class="px-4 py-2 border text-center"><?= $no++ ?></td>
-                        <td class="px-4 py-2 border text-center"><?= htmlspecialchars($row['username']) ?></td>
-                        <td class="px-4 py-2 border text-center">
-                            <a href="edit_admin.php?id=<?= $row['id'] ?>" class="text-blue-600 hover:underline mr-2">Edit</a>
-                            <a href="hapus_admin.php?id=<?= $row['id'] ?>" class="text-red-600 hover:underline"
+                        <td style="font-size: 18px; font-weight: bold;" class="px-4 py-2 border text-center"><?= $no++ ?></td>
+                        <td style="font-size: 18px; font-weight: bold;" class="px-4 py-2 border text-center"><?= htmlspecialchars($row['username']) ?></td>
+                        <td style="font-size: 18px; font-weight: bold;" class="px-4 py-2 border text-center">
+                            <a style="font-size: 18px;" href="edit_admin.php?id=<?= $row['id'] ?>" class="text-blue-600 hover:underline mr-2">Edit</a>
+                            <a style="font-size: 18px;" href="hapus_admin.php?id=<?= $row['id'] ?>" class="text-red-600 hover:underline"
                                onclick="return confirm('Hapus admin ini?')">Hapus</a>
                         </td>
                     </tr>

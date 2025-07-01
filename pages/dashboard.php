@@ -12,6 +12,7 @@ include '../includes/db.php';
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Admin</title>
+    <link rel="icon" href="../logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
