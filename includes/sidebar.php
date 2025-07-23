@@ -7,7 +7,7 @@
 <!-- Sidebar -->
 <div class="fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white shadow-lg flex flex-col">
   <div class="flex items-center justify-center gap-3 py-6 border-b border-gray-700">
-    <img src="../logo.png" alt="Logo" class="h-10 w-10 rounded-full">
+    <img src="../plnn.jpg" alt="Logo" class="h-20 w-20 rounded-full">
     <span class="text-xl font-bold">Admin Panel</span>
   </div>
 
@@ -23,6 +23,9 @@
     </li>
     <li>
       <a href="admin.php" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition">👤 Manajemen Admin</a>
+    </li>
+    <li>
+      <a href="topologi.php" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition">🕸️ Topologi Jaringan</a>
     </li>
     <li>
       <a href="laporan.php" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition">📁 Export Laporan</a>

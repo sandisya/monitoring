@@ -17,11 +17,31 @@ include '../includes/db.php';
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100">
+    <body class="relative bg-gray-100">
+    <style>
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url(../bg.jpg);
+            background-size: cover;
+            background-position: center;
+            filter: blur(2px); /* Atur seberapa blur */
+            z-index: -1; /* Letakkan di belakang konten */
+        }
+    </style>
+
 
 <?php include '../includes/sidebar.php'; ?>
 
 <div class="ml-64 p-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-8">Dashboard Admin</h1>
+    <h1 class="text-3xl font-bold text-white mb-8 border border-blue-600 bg-blue-500 p-4 rounded-lg shadow">
+    Dashboard Admin
+</h1>
+
 
     <?php
     $totalPerangkat = $conn->query("SELECT COUNT(*) as total FROM perangkat")->fetch_assoc()['total'];

@@ -34,12 +34,32 @@ $jenisList = $conn->query("SELECT DISTINCT jenis_perangkat FROM perangkat");
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
+    <body class="relative bg-gray-100">
+    <style>
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url(../bg.jpg);
+            background-size: cover;
+            background-position: center;
+            filter: blur(2px); /* Atur seberapa blur */
+            z-index: -1; /* Letakkan di belakang konten */
+        }
+    </style>
+
 
 <?php include '../includes/sidebar.php'; ?>
 
 <div class="ml-64 p-6">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-semibold">Data Perangkat</h1>
+        <h1 class="text-3xl font-bold text-white mb-8 border border-blue-600 bg-blue-500 p-4 rounded-lg shadow">
+    Data Perangkat
+</h1>
+
         <a href="tambah_perangkat.php" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
             + Tambah Perangkat
         </a>

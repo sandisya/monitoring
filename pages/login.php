@@ -29,6 +29,7 @@ if (isset($_SESSION['admin_id'])) {
 
     <!-- Right Side (Form) -->
     <div class="w-full md:w-1/2 p-8 sm:p-12">
+      <img src="../pln.png" alt="logo pln">
       <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">Login Admin</h2>
 
       <form method="POST" action="../actions/login_action.php" class="space-y-5">

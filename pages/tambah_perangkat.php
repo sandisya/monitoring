@@ -59,6 +59,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
+    <body class="relative bg-gray-100">
+    <style>
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url(../bg.jpg);
+            background-size: cover;
+            background-position: center;
+            filter: blur(2px); /* Atur seberapa blur */
+            z-index: -1; /* Letakkan di belakang konten */
+        }
+    </style>
+
 
 <?php include '../includes/sidebar.php'; ?>
 

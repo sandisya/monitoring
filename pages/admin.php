@@ -18,12 +18,32 @@ $result = $conn->query("SELECT * FROM admin ORDER BY id ASC");
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
+    <body class="relative bg-gray-100">
+    <style>
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url(../bg.jpg);
+            background-size: cover;
+            background-position: center;
+            filter: blur(2px); /* Atur seberapa blur */
+            z-index: -1; /* Letakkan di belakang konten */
+        }
+    </style>
+
 
 <?php include '../includes/sidebar.php'; ?>
 
 <div class="ml-64 p-8">
     <div class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl font-semibold text-center mb-6">Manajemen Admin</h2>
+        <h1 class="text-3xl font-bold text-white mb-8 border border-blue-600 bg-blue-500 p-4 rounded-lg shadow">
+    Manajemen Admin
+</h1>
+
 
         <div class="flex justify-end mb-4">
             <a href="tambah_admin.php" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition">
