@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ssi", $ip_baru, $status, $id);
     $stmt->execute();
 
-    header("Location: ip_address.php");
+    header("Location: /server-monitoring/pages/ip.php");
     exit;
 }
 ?>

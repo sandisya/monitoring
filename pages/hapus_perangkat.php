@@ -30,6 +30,12 @@ $row = $result->fetch_assoc();
 $ip = $row['ip_address'];
 $stmt->close();
 
+// Hapus relasi terlebih dahulu
+$conn->query("DELETE FROM relasi_perangkat WHERE dari_id = $id OR ke_id = $id");
+
+// Lalu hapus perangkat
+$conn->query("DELETE FROM perangkat WHERE id = $id");
+
 // Hapus perangkat
 $stmt = $conn->prepare("DELETE FROM perangkat WHERE id = ?");
 $stmt->bind_param("i", $id);
